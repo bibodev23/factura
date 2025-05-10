@@ -20,13 +20,14 @@ class InvoiceLine
     private ?float $total = null;
 
     #[ORM\ManyToOne(inversedBy: 'invoiceLines')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Invoice $invoice = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
+
 
     public function getDescription(): ?string
     {

@@ -1,0 +1,11 @@
+<div
+    {{ attributes }}
+>
+    {{ form_start(form) }}
+    {{ form_widget(form.number) }}
+    {{ form_widget(form.customer) }}
+    <p>Prestations</p>
+    {{ form_widget(form.invoiceLines) }}
+    <button type="submit" class="btn btn-primary">Soumettre</button>
+{{ form_end(form) }}
+</div>

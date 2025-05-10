@@ -21,7 +21,7 @@ class Invoice
     /**
      * @var Collection<int, InvoiceLine>
      */
-    #[ORM\OneToMany(targetEntity: InvoiceLine::class, mappedBy: 'invoice', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: InvoiceLine::class, mappedBy: 'invoice', orphanRemoval: true, cascade: ['persist'])]
     private Collection $invoiceLines;
 
     #[ORM\ManyToOne(inversedBy: 'invoices')]
@@ -91,4 +91,5 @@ class Invoice
 
         return $this;
     }
+
 }
