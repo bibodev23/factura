@@ -1,11 +1,73 @@
-<div
-    {{ attributes }}
->
-    {{ form_start(form) }}
-    {{ form_widget(form.number) }}
-    {{ form_widget(form.customer) }}
-    <p>Prestations</p>
-    {{ form_widget(form.invoiceLines) }}
-    <button type="submit" class="btn btn-primary">Soumettre</button>
-{{ form_end(form) }}
+<div {{ attributes }}>
+	{{ form_start(form) }}
+	<div>
+		<label for="invoice_form_status">Status
+			{{ form_widget(form.status) }}</label>
+		<label for="invoice_form_number">Numéro de facture
+			{{ form_widget(form.number)  }}</label>
+	</div>
+	<label for="invoice_form_customer">Client</label>
+	{{ form_widget(form.customer) }}
+	<div>
+		<p>Prestations</p>
+		<table class="table">
+			<thead>
+				<tr>
+					<td>Prestation</td>
+					<td>Prix unitaire</td>
+                    <td>Quantité</td>
+                    <td>Total prestaion</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for item_form in form.invoiceLines %}
+					<tr>
+						<td>
+							{{ form_row(item_form.description, {
+                                label: false,
+                                row_attr: {class: 'mb-1'},
+                                attr: {
+                                    placeholder: 'Description de la prestation'
+                                }
+                            }) }}
+						</td>
+						<td>
+							{{ form_row(item_form.unitPrice, {
+                                row_attr: {class: ''},
+                                label: false,
+                                attr: {
+                                    placeholder: 'Tarif de la prestation'
+                                }
+                            }) }}
+						</td>
+                        <td>
+                            {{ form_row(item_form.quantity, {
+                                row_attr: {class: ''},
+                                label: false,
+                            }) }}
+                        </td>
+                        <td>
+                            {{ item_form.vars.value.getTotal() }}
+                        </td>
+						<td>
+							{{ form_row(item_form.vars.button_delete, {label: 'X', attr: {class: 'btn btn-outline-danger'}}) }}
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	{{ form_widget(form.invoiceLines.vars.button_add, {label: '+ Ajouter une prestation', attr: {class: 'btn btn-outline-primary'}}) }}
+	<div>
+		<strong>Total :</strong>
+		{{ invoice.getTotal() }}
+		€
+	</div>
+	<div>
+		<strong>Remarques :</strong>
+		{{ form_widget(form.notes) }}
+	</div>
+	<button type="submit" class="btn btn-success">Enregistrer la facture</button>
+
+	{{ form_end(form) }}
 </div>

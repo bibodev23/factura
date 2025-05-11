@@ -3,3 +3,19 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+body {
+    background-color: rgb(38, 37, 37);
+    color: white;
+    a {
+        color: white;
+        text-decoration: none;
+    }
+}
+
+#invoice_form_invoiceLines {
+    fieldset {
+        background-color: red;
+        width: fit-content;
+    }
+}

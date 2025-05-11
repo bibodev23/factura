@@ -16,10 +16,7 @@
 	</head>
 	<body>
     <div class="container">
-		<nav class="navbar navbar-expand-lg bg-body-tertiary">
-			<div class="container-fluid">
-				<div class="collapse navbar-collapse" id="navbarNav">
-					<ul class="navbar-nav">
+					<ul class="nav justify-content-center">
 						<li class="nav-item">
 							<a class="nav-link" href="{{ path('app_invoice_index')}}">Mes factures</a>
 						</li>
@@ -33,9 +30,6 @@
 							<a class="nav-link" href="{{ path('app_customer_new')}}">Ajouter un client</a>
 						</li>
 					</ul>
-				</div>
-			</div>
-		</nav>
         {% block body %}{% endblock %}
         </div>
 	</body>

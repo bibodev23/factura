@@ -1,4 +1,6 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+    {{ form_row(form.status) }}
+    {{ form_row(form.number) }}
+    {{ form_row(form.customer) }}
+    <button class="btn btn-success">{{ button_label|default('Mettre à jour la facture') }}</button>
 {{ form_end(form) }}

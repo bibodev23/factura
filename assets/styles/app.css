@@ -2,4 +2,19 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  background-color: rgb(38, 37, 37);
+  color: white;
+}
+body a {
+  color: white;
+  text-decoration: none;
+}
+
+#invoice_form_invoiceLines fieldset {
+  background-color: red;
+  width: -moz-fit-content;
+  width: fit-content;
 }/*# sourceMappingURL=app.css.map */

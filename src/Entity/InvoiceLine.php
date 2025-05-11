@@ -17,7 +17,10 @@ class InvoiceLine
     private ?string $description = null;
 
     #[ORM\Column]
-    private ?float $total = null;
+    private ?float $unitPrice = null;
+
+    #[ORM\Column]
+    private ?int $quantity = null;
 
     #[ORM\ManyToOne(inversedBy: 'invoiceLines')]
     #[ORM\JoinColumn(nullable: true)]
@@ -27,7 +30,6 @@ class InvoiceLine
     {
         return $this->id;
     }
-
 
     public function getDescription(): ?string
     {
@@ -41,16 +43,33 @@ class InvoiceLine
         return $this;
     }
 
-    public function getTotal(): ?float
+    public function getUnitPrice(): ?float
     {
-        return $this->total;
+        return $this->unitPrice;
     }
 
-    public function setTotal(float $total): static
+    public function setUnitPrice(float $unitPrice): static
     {
-        $this->total = $total;
+        $this->unitPrice = $unitPrice;
 
         return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): static
+    {
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getTotal(): ?float
+    {
+       return $this->getQuantity() * $this->getUnitPrice(); 
     }
 
     public function getInvoice(): ?Invoice
@@ -64,4 +83,5 @@ class InvoiceLine
 
         return $this;
     }
+
 }

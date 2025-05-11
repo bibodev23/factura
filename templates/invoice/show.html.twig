@@ -3,24 +3,32 @@
 {% block title %}Invoice{% endblock %}
 
 {% block body %}
-    <h1>Invoice</h1>
+    <h1>Facture n° {{ invoice.number }}</h1>
 
     <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ invoice.id }}</td>
-            </tr>
-            <tr>
-                <th>Number</th>
-                <td>{{ invoice.number }}</td>
-            </tr>
-        </tbody>
+   <thead>
+        <tr>
+        <th>Description</th>
+        <th>Prix unitaire</th>
+        <th>Quantité</th>
+        <th>Total</th>
+        </tr>
+   </thead>
+   <tbody>
+        {% for line in invoice.invoiceLines %}
+        <tr>
+        <td>{{ line.description }}</td>
+        <td>{{ line.unitPrice }}</td>
+        <td>{{ line.quantity }}</td>
+        <td>{{ line.total }}</td>
+        </tr>
+        {% endfor %}
+   </tbody>
     </table>
 
-    <a href="{{ path('app_invoice_index') }}">back to list</a>
+    <a href="{{ path('app_invoice_index') }}" class="btn btn-primary">Retour à la liste</a>
 
-    <a href="{{ path('app_invoice_edit', {'id': invoice.id}) }}">edit</a>
+    <a href="{{ path('app_invoice_edit', {'id': invoice.id}) }}" class="btn btn-success">Mettre à jour</a>
 
     {{ include('invoice/_delete_form.html.twig') }}
 {% endblock %}
