@@ -7,6 +7,7 @@ use App\Entity\InvoiceLine;
 use App\Enum\InvoiceStatus;
 use App\Form\InvoiceFormType;
 use App\Repository\InvoiceRepository;
+use App\Service\PdfService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -86,5 +87,17 @@ final class InvoiceController extends AbstractController
         }
 
         return $this->redirectToRoute('app_invoice_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('invoice/{id}/pdf', name: 'app_invoice_pdf')]
+    public function generateInvoicePdf(Invoice $invoice, PdfService $pdfService): Response
+    {
+        $pdfContent = $pdfService->generatePdf('invoice/pdf.html.twig', [
+            'invoice' => $invoice,
+        ]);
+        return new Response($pdfContent, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="facture_' . $invoice->getId() . '.pdf"',
+        ]);
     }
 }
