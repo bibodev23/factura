@@ -12,6 +12,9 @@ body a {
   color: white;
   text-decoration: none;
 }
+body ul {
+  list-style-type: none;
+}
 
 #invoice_form_invoiceLines fieldset {
   background-color: red;

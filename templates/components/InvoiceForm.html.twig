@@ -17,6 +17,8 @@
 					<td>Prix unitaire</td>
                     <td>Quantité</td>
                     <td>Total prestaion</td>
+					<td>CMR</td>
+					<td>Action</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -49,6 +51,9 @@
                         <td>
                             {{ item_form.vars.value.getTotal() }}
                         </td>
+						<td>
+							{{ form_row(item_form.cmrFile) }}
+						</td>
 						<td>
 							{{ form_row(item_form.vars.button_delete, {label: 'X', attr: {class: 'btn btn-outline-danger'}}) }}
 						</td>

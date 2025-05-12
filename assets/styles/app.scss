@@ -11,6 +11,9 @@ body {
         color: white;
         text-decoration: none;
     }
+    ul {
+        list-style-type: none;
+    }
 }
 
 #invoice_form_invoiceLines {

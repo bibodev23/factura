@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Invoice;
 use App\Entity\InvoiceLine;
+use App\Enum\InvoiceStatus;
 use App\Form\InvoiceFormType;
 use App\Repository\InvoiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,10 +28,12 @@ final class InvoiceController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $invoice = new Invoice();
+        $invoice->setStatus(InvoiceStatus::PendingSending);
         $form = $this->createForm(InvoiceFormType::class, $invoice);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $invoice->setCreatedAt(new \DateTimeImmutable());
             $entityManager->persist($invoice);
             $entityManager->flush();
 
@@ -58,6 +61,7 @@ final class InvoiceController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $invoice->setUpdatedAt(new \DateTimeImmutable());
             if ($request->request->has('button_add')) {
                 $invoiceLine = new InvoiceLine();
                 $invoice->addInvoiceLine($invoiceLine);

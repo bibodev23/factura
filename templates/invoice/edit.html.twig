@@ -5,7 +5,7 @@
 {% block body %}
     <h1>Mettre à jour cette facture</h1>
 
-    {{ include('invoice/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ component('InvoiceForm', {invoice: invoice})}}
 
     <a href="{{ path('app_invoice_index') }}" class="btn btn-primary">Retour à la liste</a>
 
