@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MyCompany index{% endblock %}
+
+{% block body %}
+    <h1>MyCompany index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Logo</th>
+                <th>SiretNumber</th>
+                <th>TvaNumber</th>
+                <th>Adress</th>
+                <th>ComplementAdress</th>
+                <th>Zip</th>
+                <th>City</th>
+                <th>TvaRate</th>
+                <th>Iban</th>
+                <th>Email</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for my_company in my_company %}
+            <tr>
+                <td>{{ my_company.id }}</td>
+                <td>{{ my_company.name }}</td>
+                <td>{{ my_company.logo }}</td>
+                <td>{{ my_company.siretNumber }}</td>
+                <td>{{ my_company.tvaNumber }}</td>
+                <td>{{ my_company.adress }}</td>
+                <td>{{ my_company.complementAdress }}</td>
+                <td>{{ my_company.zip }}</td>
+                <td>{{ my_company.city }}</td>
+                <td>{{ my_company.tvaRate }}</td>
+                <td>{{ my_company.iban }}</td>
+                <td>{{ my_company.email }}</td>
+                <td>{{ my_company.createdAt ? my_company.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ my_company.updatedAt ? my_company.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_my_company_show', {'id': my_company.id}) }}">show</a>
+                    <a href="{{ path('app_my_company_edit', {'id': my_company.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="15">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_my_company_new') }}">Create new</a>
+{% endblock %}

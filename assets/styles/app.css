@@ -4,13 +4,9 @@
   box-sizing: border-box;
 }
 
-body {
-  background-color: rgb(38, 37, 37);
-  color: white;
-}
 body a {
-  color: white;
   text-decoration: none;
+  cursor: pointer;
 }
 body ul {
   list-style-type: none;
