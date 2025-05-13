@@ -20,7 +20,7 @@ use Twig\Environment;
 #[Route('/')]
 final class InvoiceController extends AbstractController
 {
-    #[Route(name: 'app_invoice_index', methods: ['GET'])]
+    #[Route(path: 'invoice', name: 'app_invoice_index', methods: ['GET'])]
     public function index(InvoiceRepository $invoiceRepository): Response
     {
         return $this->render('invoice/index.html.twig', [
@@ -143,7 +143,6 @@ final class InvoiceController extends AbstractController
             $filePath = $line->getCmr();
 
             if ($filePath) {
-                // Chemin absolu complet (à adapter à ton stockage local)
                 $absolutePath = $this->getParameter('kernel.project_dir') . '/public/images/cmrs/' . $filePath;
 
                 if (file_exists($absolutePath)) {
