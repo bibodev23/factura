@@ -15,12 +15,33 @@
                 <th>Nom</th>
                 <td>{{ customer.name }}</td>
             </tr>
+            <tr>
+                <th>Adresse</th>
+                <td>{{ customer.adress }}</td>
+            </tr>
+            <tr>
+                <th>Ville</th>
+                <td>{{ customer.city }}</td>
+            </tr>
+            <tr>
+            <th>Email</th>
+            
+                <td>{{ customer.email }}</td>
+            </tr>
         </tbody>
-    </table>
 
     {% for invoice in customer.invoices %}
+                    <tr>
+                <td>{{ invoice.id }}</td>
+                <td>{{ invoice.number }}</td>
+                <td>{{ invoice.total }}</td>
+                <td>
+                    <a href="{{ path('app_invoice_show', {'id': invoice.id}) }}">show</a>
+                    <a href="{{ path('app_invoice_edit', {'id': invoice.id}) }}">edit</a>
+                </td>
+            </tr>
     {% endfor %}
-
+    </table>
     <a href="{{ path('app_customer_index') }}" class="btn btn-primary">retour à la liste</a>
 
     <a href="{{ path('app_customer_edit', {'id': customer.id}) }}" class="btn btn-success">Mettre à jour</a>

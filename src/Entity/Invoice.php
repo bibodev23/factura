@@ -112,6 +112,14 @@ class Invoice
         return $this;
     }
 
+    public function getCustomerEmail(): ?string
+    {
+        if ($this->getCustomer()) {
+            return $this->getCustomer()->getEmail();
+        }
+        return null;
+    }
+
     public function getTotal(): string
     {
         $total = 0;

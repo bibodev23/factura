@@ -29,11 +29,7 @@ class InvoiceFormType extends AbstractType
                 'choice_label' => 'getLabel',
                 'placeholder' => 'Sélectionner un statut',
             ])
-            ->add('customer', EntityType::class, [
-                'class' => Customer::class,
-                'choice_label' => 'name',
-                'label' => 'Client',
-            ])
+            ->add('customer', CustomerAutocompleteField::class)
             ->add('invoiceLines', LiveCollectionType::class, [
                 'entry_type' => InvoiceLineFormType::class,
                 'entry_options' => [

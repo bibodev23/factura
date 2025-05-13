@@ -1,37 +1,48 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Invoice{% endblock %}
+{% block title %}Invoice
+{% endblock %}
 
 {% block body %}
-    <h1>Facture n° {{ invoice.number }}</h1>
+	<h1>Facture n°
+		{{ invoice.number }}
+		pour
+		{{ invoice.customer.name }}</h1>
+	<p>Email de destination :
+		{{ invoice.getCustomerEmail() }}</p>
 
-    <table class="table">
-   <thead>
-        <tr>
-        <th>Description</th>
-        <th>Prix unitaire</th>
-        <th>Quantité</th>
-        <th>Total</th>
-        <th>CMR</th>
-        </tr>
-   </thead>
-   <tbody>
-        {% for line in invoice.invoiceLines %}
-        <tr>
-        <td>{{ line.description }}</td>
-        <td>{{ line.unitPrice }}</td>
-        <td>{{ line.quantity }}</td>
-        <td>{{ line.total }}</td>
-        <td><a href="{{ vich_uploader_asset(line, 'cmrFile') }}" target="_blank" class="btn btn-primary">CMR</a></td>
-        </tr>
-        {% endfor %}
-   </tbody>
-    </table>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Description</th>
+				<th>Prix unitaire</th>
+				<th>Quantité</th>
+				<th>Total</th>
+				<th>CMR</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for line in invoice.invoiceLines %}
+				<tr>
+					<td>{{ line.description }}</td>
+					<td>{{ line.unitPrice }}</td>
+					<td>{{ line.quantity }}</td>
+					<td>{{ line.total }}</td>
+					<td>
+						<a href="{{ vich_uploader_asset(line, 'cmrFile') }}" target="_blank" class="btn btn-primary">CMR</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 
-    <a href="{{ path('app_invoice_index') }}" class="btn btn-primary">Retour à la liste</a>
+	<a href="{{ path('app_invoice_index') }}" class="btn btn-primary">Retour à la liste</a>
+	<a href="{{ path('app_invoice_edit', {'id': invoice.id}) }}" class="btn btn-success">Modifier la facture</a>
+	<a href="{{ path('app_invoice_pdf', {'id': invoice.id}) }}" class="btn btn-warning">Télécharger la facture en PDF</a>
+	<form action="{{ path('app_invoice_send', {'id': invoice.id}) }}" method="post" style="display:inline;">
+		<input type="hidden" name="_token" value="{{ csrf_token('send_invoice' ~ invoice.id) }}">
+		<button type="submit" class="btn btn-outline-dark">Envoyer la facture à mon client</button>
+	</form>
 
-    <a href="{{ path('app_invoice_edit', {'id': invoice.id}) }}" class="btn btn-success">Modifier la facture</a>
-    <a href="{{ path('app_invoice_pdf', {'id': invoice.id}) }}" class="btn btn-warning">Télécharger la facture en PDF</a>
-
-    {{ include('invoice/_delete_form.html.twig') }}
+	{{ include('invoice/_delete_form.html.twig') }}
 {% endblock %}
