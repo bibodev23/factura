@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Customer;
+use App\Entity\User;
 use App\Form\CustomerForm;
 use App\Repository\CustomerRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,19 +18,32 @@ final class CustomerController extends AbstractController
     #[Route(name: 'app_customer_index', methods: ['GET'])]
     public function index(CustomerRepository $customerRepository): Response
     {
+        /** @var \App\Entity\User|null $user */
+        $user = $this->getUser();
         return $this->render('customer/index.html.twig', [
-            'customers' => $customerRepository->findAll(),
+            'customers' => $customerRepository->findByUser($user),
         ]);
     }
 
     #[Route('/new', name: 'app_customer_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        /** @var \App\Entity\User|null $user */
+        $user = $this->getUser();
+        if (!$user) {
+            $this->addFlash('error', 'Vous devez être connecté pour créer un client.');
+            return $this->redirectToRoute('app_login');
+        }
+        if (!$user->isVerified()) {
+            $this->addFlash('error', 'Vous devez vérifier votre adresse email avant de créer un client.');
+            return $this->redirectToRoute('app_login');
+        }
         $customer = new Customer();
         $form = $this->createForm(CustomerForm::class, $customer);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $customer->setUser($user);
             $entityManager->persist($customer);
             $entityManager->flush();
 

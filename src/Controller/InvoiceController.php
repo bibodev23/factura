@@ -23,20 +23,37 @@ final class InvoiceController extends AbstractController
     #[Route(path: 'invoice', name: 'app_invoice_index', methods: ['GET'])]
     public function index(InvoiceRepository $invoiceRepository): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         return $this->render('invoice/index.html.twig', [
-            'invoices' => $invoiceRepository->findAll(),
+            'invoices' => $invoiceRepository->findByUser($user),
         ]);
     }
 
     #[Route('invoice/new', name: 'app_invoice_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+                /** @var \App\Entity\User|null $user */
+        $user = $this->getUser();
+        if (!$user->isVerified()) {
+            $this->addFlash('error', 'Vous devez vérifier votre adresse email avant de créer une facture.');
+            return $this->redirectToRoute('app_login');
+        }
         $invoice = new Invoice();
         $invoice->setStatus(InvoiceStatus::PendingSending);
         $form = $this->createForm(InvoiceFormType::class, $invoice);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            if ($user) {
+                $invoice->setUser($user);
+            } else {
+                $this->addFlash('error', 'Vous devez être connecté pour créer une facture.');
+                return $this->redirectToRoute('app_login');
+            }
             $invoice->setCreatedAt(new \DateTimeImmutable());
             $entityManager->persist($invoice);
             $entityManager->flush();
@@ -61,6 +78,10 @@ final class InvoiceController extends AbstractController
     #[Route('invoice/{id}/edit', name: 'app_invoice_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Invoice $invoice, EntityManagerInterface $entityManager): Response
     {
+        if($invoice->getUser() !== $this->getUser()) {
+            $this->addFlash('error', 'Vous ne pouvez pas modifier cette facture.');
+            return $this->redirectToRoute('app_invoice_index', [], Response::HTTP_SEE_OTHER);
+        }
         $form = $this->createForm(InvoiceFormType::class, $invoice);
         $form->handleRequest($request);
 

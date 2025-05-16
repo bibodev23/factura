@@ -37,7 +37,7 @@ class Invoice
     private ?\DateTimeImmutable $dueAt = null;
 
  #[ORM\Column(type: 'string', enumType: InvoiceStatus::class)]
-    private InvoiceStatus $status ;
+             private InvoiceStatus $status ;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $notes = null;
@@ -47,6 +47,10 @@ class Invoice
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\ManyToOne(inversedBy: 'invoices')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -202,6 +206,18 @@ class Invoice
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
